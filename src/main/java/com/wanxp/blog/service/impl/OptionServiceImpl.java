@@ -1,108 +1,64 @@
 package com.wanxp.blog.service.impl;
 
-import com.wanxp.blog.dao.OptionDaoI;
-import com.wanxp.blog.model.Toption;
-import com.wanxp.blog.pageModel.DataGrid;
-import com.wanxp.blog.pageModel.Option;
-import com.wanxp.blog.pageModel.PageHelper;
+import com.wanxp.blog.dao.OptionRepository;
+import com.wanxp.blog.model.Option;
+import com.wanxp.blog.dto.OptionDTO;
 import com.wanxp.blog.service.OptionServiceI;
-import com.wanxp.blog.util.F;
-import com.wanxp.blog.util.MyBeanUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
-public class OptionServiceImpl extends BaseServiceImpl<Option> implements OptionServiceI {
+public class OptionServiceImpl implements OptionServiceI {
 
-	@Autowired
-	private OptionDaoI optionDao;
+    @Autowired
+    private OptionRepository repostory;
 
-	@Override
-	public DataGrid dataGrid(Option option, PageHelper ph) {
-		List<Option> ol = new ArrayList<Option>();
-		String hql = " from Toption t ";
-		DataGrid dg = dataGridQuery(hql, ph, option, optionDao);
-		@SuppressWarnings("unchecked")
-		List<Toption> l = dg.getRows();
-		if (l != null && l.size() > 0) {
-			for (Toption t : l) {
-				Option o = new Option();
-				BeanUtils.copyProperties(t, o);
-				ol.add(o);
-			}
-		}
-		dg.setRows(ol);
-		return dg;
-	}
-	
+    @Override
+    public Page<OptionDTO> queryInPage(OptionDTO commentDTO, Pageable pa) {
+        Page<Option> p = repostory.findAll(pa);
+        List<OptionDTO> ds = new ArrayList<>();
+        if (p == null || p.getContent() == null)
+            return null;
+        p.getContent().stream().forEach(x -> {
+            OptionDTO d = new OptionDTO();
+            BeanUtils.copyProperties(x, d);
+            ds.add(d);
+        });
+        return new PageImpl<OptionDTO>(ds);
+    }
 
-	protected String whereHql(Option option, Map<String, Object> params) {
-		String whereHql = "";	
-		if (option != null) {
-			whereHql += " where t.isdeleted = 0 ";
-			if (!F.empty(option.getTenantId())) {
-				whereHql += " and t.tenantId = :tenantId";
-				params.put("tenantId", option.getTenantId());
-			}		
-			if (!F.empty(option.getIsdeleted())) {
-				whereHql += " and t.isdeleted = :isdeleted";
-				params.put("isdeleted", option.getIsdeleted());
-			}		
-			if (!F.empty(option.getName())) {
-				whereHql += " and t.name = :name";
-				params.put("name", option.getName());
-			}		
-			if (!F.empty(option.getValue())) {
-				whereHql += " and t.value = :value";
-				params.put("value", option.getValue());
-			}		
-			if (!F.empty(option.getDescription())) {
-				whereHql += " and t.description = :description";
-				params.put("description", option.getDescription());
-			}		
-		}	
-		return whereHql;
-	}
+    @Override
+    public void add(OptionDTO dto) {
+        Option t = new Option();
+        BeanUtils.copyProperties(dto, t);
+        repostory.saveAndFlush(t);
+    }
 
-	@Override
-	public void add(Option option) {
-		Toption t = new Toption();
-		BeanUtils.copyProperties(option, t);
-		//t.setId(jb.absx.UUID.uuid());
-		t.setIsdeleted(false);
-		optionDao.save(t);
-	}
+    @Override
+    public OptionDTO get(Integer id) {
+        Option t = repostory.getOne(id);
+        OptionDTO dto = new OptionDTO();
+        if (t != null)
+            BeanUtils.copyProperties(t, dto);
+        return dto;
+    }
 
-	@Override
-	public Option get(Integer id) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", id);
-		Toption t = optionDao.get("from Toption t  where t.id = :id", params);
-		Option o = new Option();
-		BeanUtils.copyProperties(t, o);
-		return o;
-	}
+    @Override
+    public void edit(OptionDTO dto) {
+        Option t = new Option();
+        BeanUtils.copyProperties(dto, t);
+        repostory.save(t);
+    }
 
-	@Override
-	public void edit(Option option) {
-		Toption t = optionDao.get(Toption.class, option.getId());
-		if (t != null) {
-			MyBeanUtils.copyProperties(option, t, new String[] { "id" , "addtime", "isdeleted","updatetime" },true);
-		}
-	}
-
-	@Override
-	public void delete(Integer id) {
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", id);
-		optionDao.executeHql("update Toption t set t.isdeleted = 1 where t.id = :id",params);
-		//optionDao.delete(optionDao.get(Toption.class, id));
-	}
-
+    @Override
+    public void delete(Integer id) {
+        repostory.deleteById(id);
+    }
 }

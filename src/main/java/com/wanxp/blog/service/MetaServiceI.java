@@ -1,8 +1,8 @@
 package com.wanxp.blog.service;
 
-import com.wanxp.blog.pageModel.DataGrid;
-import com.wanxp.blog.pageModel.Meta;
-import com.wanxp.blog.pageModel.PageHelper;
+import com.wanxp.blog.dto.MetaDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * 
@@ -16,18 +16,18 @@ public interface MetaServiceI {
 	 * 
 	 * @param meta
 	 *            参数
-	 * @param ph
+	 * @param pa
 	 *            分页帮助类
 	 * @return
 	 */
-	public DataGrid dataGrid(Meta meta, PageHelper ph);
+	public Page queryInPage(MetaDTO meta, Pageable pa);
 
 	/**
 	 * 添加Meta
 	 * 
 	 * @param meta
 	 */
-	public void add(Meta meta);
+	public void add(MetaDTO meta);
 
 	/**
 	 * 获得Meta对象
@@ -35,14 +35,14 @@ public interface MetaServiceI {
 	 * @param id
 	 * @return
 	 */
-	public Meta get(Integer id);
+	public MetaDTO get(Integer id);
 
 	/**
 	 * 修改Meta
 	 * 
 	 * @param meta
 	 */
-	public void edit(Meta meta);
+	public void edit(MetaDTO meta);
 
 	/**
 	 * 删除Meta

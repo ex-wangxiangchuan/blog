@@ -1,11 +1,12 @@
 package com.wanxp.blog.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.wanxp.blog.pageModel.*;
+import com.wanxp.blog.dto.*;
 import com.wanxp.blog.service.UserServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +20,8 @@ import java.util.List;
  * @author John
  * 
  */
-@RestController("/userController")
+@RestController
+@RequestMapping(value = "/user")
 public class UserController extends BaseController {
 
 	@Autowired
@@ -31,7 +33,7 @@ public class UserController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/manager")
+	@GetMapping("/manager")
 	public String manager(HttpServletRequest request) {
 		return "/user/user";
 	}
@@ -42,9 +44,9 @@ public class UserController extends BaseController {
 	 * @param user
 	 * @return
 	 */
-	@RequestMapping("/dataGrid")
-	public DataGrid dataGrid(User user, PageHelper ph) {
-		return userService.dataGrid(user, ph);
+	@GetMapping("/page")
+	public Page dataGrid(UserDTO user, Pageable ph) {
+		return userService.queryInPage(user, ph);
 	}
 	/**
 	 * 获取User数据表格excel
@@ -58,12 +60,12 @@ public class UserController extends BaseController {
 	 * @throws IllegalArgumentException 
 	 * @throws IOException 
 	 */
-	@RequestMapping("/download")
-	public void download(User user, PageHelper ph, String downloadFields, HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException{
-		DataGrid dg = dataGrid(user,ph);		
+	@GetMapping("/download")
+	public void download(UserDTO user, Pageable pa, String downloadFields, HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException{
+		Page dg = dataGrid(user,pa);
 		downloadFields = downloadFields.replace("&quot;", "\"");
 		downloadFields = downloadFields.substring(1,downloadFields.length()-1);
-		List<Colum> colums = JSON.parseArray(downloadFields, Colum.class);
+		List<ColumDTO> colums = JSON.parseArray(downloadFields, ColumDTO.class);
 		downloadTable(colums, dg, response);
 	}
 	/**
@@ -72,9 +74,9 @@ public class UserController extends BaseController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/addPage")
+	@GetMapping("/addPage")
 	public String addPage(HttpServletRequest request) {
-		User user = new User();
+		UserDTO user = new UserDTO();
 		return "/user/userAdd";
 	}
 
@@ -83,8 +85,8 @@ public class UserController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/add")
-	public Json add(User user) {
+	@PostMapping("/add")
+	public Json add(UserDTO user) {
 		Json j = new Json();		
 		userService.add(user);
 		j.setSuccess(true);
@@ -97,9 +99,9 @@ public class UserController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/view")
-	public String view(HttpServletRequest request, Integer id) {
-		User user = userService.get(id);
+	@GetMapping("/viewPage/{id}")
+	public String view(HttpServletRequest request, @PathVariable Integer id) {
+		UserDTO user = userService.get(id);
 		request.setAttribute("user", user);
 		return "/user/userView";
 	}
@@ -109,9 +111,9 @@ public class UserController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/editPage")
-	public String editPage(HttpServletRequest request, Integer id) {
-		User user = userService.get(id);
+	@GetMapping("/editPage/{id}")
+	public String editPage(HttpServletRequest request, @PathVariable Integer id) {
+		UserDTO user = userService.get(id);
 		request.setAttribute("user", user);
 		return "/user/userEdit";
 	}
@@ -122,8 +124,8 @@ public class UserController extends BaseController {
 	 * @param user
 	 * @return
 	 */
-	@RequestMapping("/edit")
-	public Json edit(User user) {
+	@PutMapping("/edit")
+	public Json edit(UserDTO user) {
 		Json j = new Json();		
 		userService.edit(user);
 		j.setSuccess(true);
@@ -137,8 +139,8 @@ public class UserController extends BaseController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping("/delete")
-	public Json delete(Integer id) {
+	@DeleteMapping("/{id}")
+	public Json delete(@PathVariable Integer id) {
 		Json j = new Json();
 		userService.delete(id);
 		j.setMsg("删除成功！");

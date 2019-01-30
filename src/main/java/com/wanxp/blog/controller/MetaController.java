@@ -1,11 +1,12 @@
 package com.wanxp.blog.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.wanxp.blog.pageModel.*;
+import com.wanxp.blog.dto.*;
 import com.wanxp.blog.service.MetaServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +20,8 @@ import java.util.List;
  * @author John
  * 
  */
-@RestController("/metaController")
+@RestController
+@RequestMapping(value = "/meta")
 public class MetaController extends BaseController {
 
 	@Autowired
@@ -31,7 +33,7 @@ public class MetaController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/manager")
+	@GetMapping("/manager")
 	public String manager(HttpServletRequest request) {
 		return "/meta/meta";
 	}
@@ -39,17 +41,17 @@ public class MetaController extends BaseController {
 	/**
 	 * 获取Meta数据表格
 	 * 
-	 * @param user
+	 * @param
 	 * @return
 	 */
-	@RequestMapping("/dataGrid")
-	public DataGrid dataGrid(Meta meta, PageHelper ph) {
-		return metaService.dataGrid(meta, ph);
+	@GetMapping("/dataGrid")
+	public Page dataGrid(MetaDTO meta, Pageable ph) {
+		return metaService.queryInPage(meta, ph);
 	}
 	/**
 	 * 获取Meta数据表格excel
 	 * 
-	 * @param user
+	 * @param
 	 * @return
 	 * @throws NoSuchMethodException 
 	 * @throws SecurityException 
@@ -58,12 +60,12 @@ public class MetaController extends BaseController {
 	 * @throws IllegalArgumentException 
 	 * @throws IOException 
 	 */
-	@RequestMapping("/download")
-	public void download(Meta meta, PageHelper ph, String downloadFields, HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException{
-		DataGrid dg = dataGrid(meta,ph);		
+	@GetMapping("/download")
+	public void download(MetaDTO meta, Pageable pa, String downloadFields, HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException{
+		Page dg = dataGrid(meta,pa);
 		downloadFields = downloadFields.replace("&quot;", "\"");
 		downloadFields = downloadFields.substring(1,downloadFields.length()-1);
-		List<Colum> colums = JSON.parseArray(downloadFields, Colum.class);
+		List<ColumDTO> colums = JSON.parseArray(downloadFields, ColumDTO.class);
 		downloadTable(colums, dg, response);
 	}
 	/**
@@ -72,9 +74,9 @@ public class MetaController extends BaseController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/addPage")
+	@GetMapping("/addPage")
 	public String addPage(HttpServletRequest request) {
-		Meta meta = new Meta();
+		MetaDTO meta = new MetaDTO();
 		return "/meta/metaAdd";
 	}
 
@@ -84,7 +86,7 @@ public class MetaController extends BaseController {
 	 * @return
 	 */
 	@RequestMapping("/add")
-	public Json add(Meta meta) {
+	public Json add(MetaDTO meta) {
 		Json j = new Json();		
 		metaService.add(meta);
 		j.setSuccess(true);
@@ -97,9 +99,9 @@ public class MetaController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/view")
-	public String view(HttpServletRequest request, Integer id) {
-		Meta meta = metaService.get(id);
+	@GetMapping("/viewPage/{id}")
+	public String view(HttpServletRequest request, @PathVariable Integer id) {
+		MetaDTO meta = metaService.get(id);
 		request.setAttribute("meta", meta);
 		return "/meta/metaView";
 	}
@@ -109,9 +111,9 @@ public class MetaController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/editPage")
-	public String editPage(HttpServletRequest request, Integer id) {
-		Meta meta = metaService.get(id);
+	@GetMapping("/editPage/{id}")
+	public String editPage(HttpServletRequest request, @PathVariable Integer id) {
+		MetaDTO meta = metaService.get(id);
 		request.setAttribute("meta", meta);
 		return "/meta/metaEdit";
 	}
@@ -122,8 +124,8 @@ public class MetaController extends BaseController {
 	 * @param meta
 	 * @return
 	 */
-	@RequestMapping("/edit")
-	public Json edit(Meta meta) {
+	@PutMapping("/edit")
+	public Json edit(MetaDTO meta) {
 		Json j = new Json();		
 		metaService.edit(meta);
 		j.setSuccess(true);
@@ -137,8 +139,8 @@ public class MetaController extends BaseController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping("/delete")
-	public Json delete(Integer id) {
+	@DeleteMapping("/{id}")
+	public Json delete(@PathVariable Integer id) {
 		Json j = new Json();
 		metaService.delete(id);
 		j.setMsg("删除成功！");

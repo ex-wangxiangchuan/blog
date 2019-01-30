@@ -1,8 +1,8 @@
 package com.wanxp.blog.service;
 
-import com.wanxp.blog.pageModel.Content;
-import com.wanxp.blog.pageModel.DataGrid;
-import com.wanxp.blog.pageModel.PageHelper;
+import com.wanxp.blog.dto.ContentDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * 
@@ -16,18 +16,18 @@ public interface ContentServiceI {
 	 * 
 	 * @param content
 	 *            参数
-	 * @param ph
+	 * @param pa
 	 *            分页帮助类
 	 * @return
 	 */
-	public DataGrid dataGrid(Content content, PageHelper ph);
+	public Page queryInPage(ContentDTO content, Pageable pa);
 
 	/**
 	 * 添加Content
 	 * 
 	 * @param content
 	 */
-	public void add(Content content);
+	public void add(ContentDTO content);
 
 	/**
 	 * 获得Content对象
@@ -35,14 +35,14 @@ public interface ContentServiceI {
 	 * @param id
 	 * @return
 	 */
-	public Content get(Integer id);
+	public ContentDTO get(Integer id);
 
 	/**
 	 * 修改Content
 	 * 
 	 * @param content
 	 */
-	public void edit(Content content);
+	public void edit(ContentDTO content);
 
 	/**
 	 * 删除Content

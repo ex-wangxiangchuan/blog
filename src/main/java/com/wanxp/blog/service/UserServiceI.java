@@ -1,8 +1,8 @@
 package com.wanxp.blog.service;
 
-import com.wanxp.blog.pageModel.DataGrid;
-import com.wanxp.blog.pageModel.PageHelper;
-import com.wanxp.blog.pageModel.User;
+import com.wanxp.blog.dto.UserDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * 
@@ -16,18 +16,18 @@ public interface UserServiceI {
 	 * 
 	 * @param user
 	 *            参数
-	 * @param ph
+	 * @param pa
 	 *            分页帮助类
 	 * @return
 	 */
-	public DataGrid dataGrid(User user, PageHelper ph);
+	public Page queryInPage(UserDTO user, Pageable pa);
 
 	/**
 	 * 添加User
 	 * 
 	 * @param user
 	 */
-	public void add(User user);
+	public void add(UserDTO user);
 
 	/**
 	 * 获得User对象
@@ -35,14 +35,14 @@ public interface UserServiceI {
 	 * @param id
 	 * @return
 	 */
-	public User get(Integer id);
+	public UserDTO get(Integer id);
 
 	/**
 	 * 修改User
 	 * 
 	 * @param user
 	 */
-	public void edit(User user);
+	public void edit(UserDTO user);
 
 	/**
 	 * 删除User

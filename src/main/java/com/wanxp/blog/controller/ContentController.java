@@ -1,11 +1,12 @@
 package com.wanxp.blog.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.wanxp.blog.pageModel.*;
+import com.wanxp.blog.dto.*;
 import com.wanxp.blog.service.ContentServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +20,8 @@ import java.util.List;
  * @author John
  * 
  */
-@RestController("/contentController")
+@RestController
+@RequestMapping(value = "/content")
 public class ContentController extends BaseController {
 
 	@Autowired
@@ -31,7 +33,7 @@ public class ContentController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/manager")
+	@GetMapping("/manager")
 	public String manager(HttpServletRequest request) {
 		return "/content/content";
 	}
@@ -42,9 +44,9 @@ public class ContentController extends BaseController {
 	 * @param user
 	 * @return
 	 */
-	@RequestMapping("/dataGrid")
-	public DataGrid dataGrid(Content content, PageHelper ph) {
-		return contentService.dataGrid(content, ph);
+	@GetMapping("/dataGrid")
+	public Page dataGrid(ContentDTO content, Pageable pa) {
+		return contentService.queryInPage(content, pa);
 	}
 	/**
 	 * 获取Content数据表格excel
@@ -58,12 +60,12 @@ public class ContentController extends BaseController {
 	 * @throws IllegalArgumentException 
 	 * @throws IOException 
 	 */
-	@RequestMapping("/download")
-	public void download(Content content, PageHelper ph, String downloadFields, HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException{
-		DataGrid dg = dataGrid(content,ph);		
+	@GetMapping("/download")
+	public void download(ContentDTO content, Pageable pa, String downloadFields, HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException{
+		Page dg = dataGrid(content,pa);
 		downloadFields = downloadFields.replace("&quot;", "\"");
 		downloadFields = downloadFields.substring(1,downloadFields.length()-1);
-		List<Colum> colums = JSON.parseArray(downloadFields, Colum.class);
+		List<ColumDTO> colums = JSON.parseArray(downloadFields, ColumDTO.class);
 		downloadTable(colums, dg, response);
 	}
 	/**
@@ -72,9 +74,9 @@ public class ContentController extends BaseController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/addPage")
+	@GetMapping("/addPage")
 	public String addPage(HttpServletRequest request) {
-		Content content = new Content();
+		ContentDTO content = new ContentDTO();
 		return "/content/contentAdd";
 	}
 
@@ -83,8 +85,8 @@ public class ContentController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/add")
-	public Json add(Content content) {
+	@PostMapping("/add")
+	public Json add(ContentDTO content) {
 		Json j = new Json();		
 		contentService.add(content);
 		j.setSuccess(true);
@@ -97,9 +99,9 @@ public class ContentController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/view")
-	public String view(HttpServletRequest request, Integer id) {
-		Content content = contentService.get(id);
+	@GetMapping("/viewPage/{id}")
+	public String view(HttpServletRequest request, @PathVariable Integer id) {
+		ContentDTO content = contentService.get(id);
 		request.setAttribute("content", content);
 		return "/content/contentView";
 	}
@@ -109,9 +111,9 @@ public class ContentController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/editPage")
-	public String editPage(HttpServletRequest request, Integer id) {
-		Content content = contentService.get(id);
+	@GetMapping("/editPage/{id}")
+	public String editPage(HttpServletRequest request, @PathVariable Integer id) {
+		ContentDTO content = contentService.get(id);
 		request.setAttribute("content", content);
 		return "/content/contentEdit";
 	}
@@ -122,8 +124,8 @@ public class ContentController extends BaseController {
 	 * @param content
 	 * @return
 	 */
-	@RequestMapping("/edit")
-	public Json edit(Content content) {
+	@PutMapping("/edit")
+	public Json edit(ContentDTO content) {
 		Json j = new Json();		
 		contentService.edit(content);
 		j.setSuccess(true);
@@ -137,8 +139,8 @@ public class ContentController extends BaseController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping("/delete")
-	public Json delete(Integer id) {
+	@DeleteMapping("/{id}")
+	public Json delete(@PathVariable Integer id) {
 		Json j = new Json();
 		contentService.delete(id);
 		j.setMsg("删除成功！");

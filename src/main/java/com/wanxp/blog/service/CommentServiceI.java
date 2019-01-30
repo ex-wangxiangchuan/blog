@@ -1,8 +1,8 @@
 package com.wanxp.blog.service;
 
-import com.wanxp.blog.pageModel.Comment;
-import com.wanxp.blog.pageModel.DataGrid;
-import com.wanxp.blog.pageModel.PageHelper;
+import com.wanxp.blog.dto.CommentDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * 
@@ -16,18 +16,18 @@ public interface CommentServiceI {
 	 * 
 	 * @param comment
 	 *            参数
-	 * @param ph
+	 * @param pa
 	 *            分页帮助类
 	 * @return
 	 */
-	public DataGrid dataGrid(Comment comment, PageHelper ph);
+	public Page queryInPage(CommentDTO comment, Pageable pa);
 
 	/**
 	 * 添加Comment
 	 * 
 	 * @param comment
 	 */
-	public void add(Comment comment);
+	public void add(CommentDTO comment);
 
 	/**
 	 * 获得Comment对象
@@ -35,14 +35,14 @@ public interface CommentServiceI {
 	 * @param id
 	 * @return
 	 */
-	public Comment get(Integer id);
+	public CommentDTO get(Integer id);
 
 	/**
 	 * 修改Comment
 	 * 
 	 * @param comment
 	 */
-	public void edit(Comment comment);
+	public void edit(CommentDTO comment);
 
 	/**
 	 * 删除Comment

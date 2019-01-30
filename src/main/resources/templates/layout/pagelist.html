@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<header>
+
+</header>
+<body>
+<div class="main-content index-page clearfix" th:fragment="pagelist">
+    <div class="post-lists">
+        <div class="post-lists-body">
+            <th:forEach items="contentList" begin="0" end="11" var="content" >
+                <div class="post-list-item">
+                    <div class="post-list-item-container">
+                        <div class="item-thumb bg-deepgrey" style="background-image:url(${content.pictureUrl});"></div>
+                        <a href="${content.url}">
+                            <div class="item-desc">
+                                <p>${content.shortContent}...</p>
+                            </div>
+                        </a>
+                        <div class="item-slant reverse-slant bg-deepgrey"></div>
+                        <div class="item-slant"></div>
+                        <div class="item-label">
+                            <div class="item-title"><a href="${content.url}">${content.title}</a>
+                            </div>
+                            <div class="item-meta clearfix">
+                                <div class="item-meta-ico ${show_icon()}"
+                                     style="background: url(/templates/themes/default/static/img/bg-ico.png) no-repeat;background-size: 40px auto;"></div>
+                                <div class="item-meta-cat">
+                                    ${show_categories()}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </th:forEach>
+        </div>
+    </div>
+</div>
+</body>
+</html>

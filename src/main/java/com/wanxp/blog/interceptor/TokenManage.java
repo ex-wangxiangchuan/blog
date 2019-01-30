@@ -1,10 +1,9 @@
 package com.wanxp.blog.interceptor;
 
-import com.wanxp.blog.pageModel.SessionInfo;
+import com.wanxp.blog.dto.SessionInfo;
 import com.wanxp.blog.service.impl.RedisUserServiceImpl;
 import com.wanxp.blog.util.F;
 import com.wanxp.blog.util.UUID;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.ContextLoader;
 import org.springframework.web.context.WebApplicationContext;

@@ -1,8 +1,8 @@
 package com.wanxp.blog.service;
 
-import com.wanxp.blog.pageModel.DataGrid;
-import com.wanxp.blog.pageModel.Option;
-import com.wanxp.blog.pageModel.PageHelper;
+import com.wanxp.blog.dto.OptionDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * 
@@ -16,18 +16,18 @@ public interface OptionServiceI {
 	 * 
 	 * @param option
 	 *            参数
-	 * @param ph
+	 * @param pa
 	 *            分页帮助类
 	 * @return
 	 */
-	public DataGrid dataGrid(Option option, PageHelper ph);
+	public Page queryInPage(OptionDTO option, Pageable pa);
 
 	/**
 	 * 添加Option
 	 * 
 	 * @param option
 	 */
-	public void add(Option option);
+	public void add(OptionDTO option);
 
 	/**
 	 * 获得Option对象
@@ -35,14 +35,14 @@ public interface OptionServiceI {
 	 * @param id
 	 * @return
 	 */
-	public Option get(Integer id);
+	public OptionDTO get(Integer id);
 
 	/**
 	 * 修改Option
 	 * 
 	 * @param option
 	 */
-	public void edit(Option option);
+	public void edit(OptionDTO option);
 
 	/**
 	 * 删除Option

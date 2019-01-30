@@ -1,11 +1,12 @@
 package com.wanxp.blog.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.wanxp.blog.pageModel.*;
+import com.wanxp.blog.dto.*;
 import com.wanxp.blog.service.OptionServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +20,8 @@ import java.util.List;
  * @author John
  * 
  */
-@RestController("/optionController")
+@RestController
+@RequestMapping(value = "/option")
 public class OptionController extends BaseController {
 
 	@Autowired
@@ -31,7 +33,7 @@ public class OptionController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/manager")
+	@GetMapping("/manager")
 	public String manager(HttpServletRequest request) {
 		return "/option/option";
 	}
@@ -42,9 +44,9 @@ public class OptionController extends BaseController {
 	 * @param user
 	 * @return
 	 */
-	@RequestMapping("/dataGrid")
-	public DataGrid dataGrid(Option option, PageHelper ph) {
-		return optionService.dataGrid(option, ph);
+	@GetMapping("/dataGrid")
+	public Page dataGrid(OptionDTO option, Pageable pa) {
+		return optionService.queryInPage(option, pa);
 	}
 	/**
 	 * 获取Option数据表格excel
@@ -58,12 +60,12 @@ public class OptionController extends BaseController {
 	 * @throws IllegalArgumentException 
 	 * @throws IOException 
 	 */
-	@RequestMapping("/download")
-	public void download(Option option, PageHelper ph, String downloadFields, HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException{
-		DataGrid dg = dataGrid(option,ph);		
+	@GetMapping("/download")
+	public void download(OptionDTO option, Pageable pa, String downloadFields, HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException{
+		Page dg = dataGrid(option,pa);
 		downloadFields = downloadFields.replace("&quot;", "\"");
 		downloadFields = downloadFields.substring(1,downloadFields.length()-1);
-		List<Colum> colums = JSON.parseArray(downloadFields, Colum.class);
+		List<ColumDTO> colums = JSON.parseArray(downloadFields, ColumDTO.class);
 		downloadTable(colums, dg, response);
 	}
 	/**
@@ -72,9 +74,9 @@ public class OptionController extends BaseController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/addPage")
+	@GetMapping("/addPage")
 	public String addPage(HttpServletRequest request) {
-		Option option = new Option();
+		OptionDTO option = new OptionDTO();
 		return "/option/optionAdd";
 	}
 
@@ -83,8 +85,8 @@ public class OptionController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/add")
-	public Json add(Option option) {
+	@PostMapping("/add")
+	public Json add(OptionDTO option) {
 		Json j = new Json();		
 		optionService.add(option);
 		j.setSuccess(true);
@@ -97,9 +99,9 @@ public class OptionController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/view")
-	public String view(HttpServletRequest request, Integer id) {
-		Option option = optionService.get(id);
+	@GetMapping("/viewPage/{id}")
+	public String view(HttpServletRequest request, @PathVariable Integer id) {
+		OptionDTO option = optionService.get(id);
 		request.setAttribute("option", option);
 		return "/option/optionView";
 	}
@@ -109,9 +111,9 @@ public class OptionController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/editPage")
-	public String editPage(HttpServletRequest request, Integer id) {
-		Option option = optionService.get(id);
+	@GetMapping("/editPage/{id}")
+	public String editPage(HttpServletRequest request, @PathVariable Integer id) {
+		OptionDTO option = optionService.get(id);
 		request.setAttribute("option", option);
 		return "/option/optionEdit";
 	}
@@ -122,8 +124,8 @@ public class OptionController extends BaseController {
 	 * @param option
 	 * @return
 	 */
-	@RequestMapping("/edit")
-	public Json edit(Option option) {
+	@PutMapping("/edit")
+	public Json edit(OptionDTO option) {
 		Json j = new Json();		
 		optionService.edit(option);
 		j.setSuccess(true);
@@ -137,8 +139,8 @@ public class OptionController extends BaseController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping("/delete")
-	public Json delete(Integer id) {
+	@DeleteMapping("/{id}")
+	public Json delete(@PathVariable Integer id) {
 		Json j = new Json();
 		optionService.delete(id);
 		j.setMsg("删除成功！");

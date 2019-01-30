@@ -1,11 +1,12 @@
 package com.wanxp.blog.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.wanxp.blog.pageModel.*;
+import com.wanxp.blog.dto.*;
 import com.wanxp.blog.service.CommentServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +20,8 @@ import java.util.List;
  * @author John
  * 
  */
-@RestController("/commentController")
+@RestController
+@RequestMapping(value = "/comment")
 public class CommentController extends BaseController {
 
 	@Autowired
@@ -31,7 +33,7 @@ public class CommentController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/manager")
+	@GetMapping("/manager")
 	public String manager(HttpServletRequest request) {
 		return "/comment/comment";
 	}
@@ -39,12 +41,12 @@ public class CommentController extends BaseController {
 	/**
 	 * 获取Comment数据表格
 	 * 
-	 * @param user
+	 * @param comment
 	 * @return
 	 */
-	@RequestMapping("/dataGrid")
-	public DataGrid dataGrid(Comment comment, PageHelper ph) {
-		return commentService.dataGrid(comment, ph);
+	@GetMapping("/dataGrid")
+	public Page dataGrid(CommentDTO comment, Pageable pa) {
+		return commentService.queryInPage(comment, pa);
 	}
 	/**
 	 * 获取Comment数据表格excel
@@ -58,12 +60,12 @@ public class CommentController extends BaseController {
 	 * @throws IllegalArgumentException 
 	 * @throws IOException 
 	 */
-	@RequestMapping("/download")
-	public void download(Comment comment, PageHelper ph, String downloadFields, HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException{
-		DataGrid dg = dataGrid(comment,ph);		
+	@GetMapping("/download")
+	public void download(CommentDTO comment, Pageable pa, String downloadFields, HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException{
+		Page dg = dataGrid(comment,pa);
 		downloadFields = downloadFields.replace("&quot;", "\"");
 		downloadFields = downloadFields.substring(1,downloadFields.length()-1);
-		List<Colum> colums = JSON.parseArray(downloadFields, Colum.class);
+		List<ColumDTO> colums = JSON.parseArray(downloadFields, ColumDTO.class);
 		downloadTable(colums, dg, response);
 	}
 	/**
@@ -72,9 +74,9 @@ public class CommentController extends BaseController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/addPage")
+	@GetMapping("/addPage")
 	public String addPage(HttpServletRequest request) {
-		Comment comment = new Comment();
+		CommentDTO comment = new CommentDTO();
 		return "/comment/commentAdd";
 	}
 
@@ -83,8 +85,8 @@ public class CommentController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/add")
-	public Json add(Comment comment) {
+	@PostMapping("/add")
+	public Json add(CommentDTO comment) {
 		Json j = new Json();		
 		commentService.add(comment);
 		j.setSuccess(true);
@@ -97,9 +99,9 @@ public class CommentController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/view")
-	public String view(HttpServletRequest request, Integer id) {
-		Comment comment = commentService.get(id);
+	@GetMapping("/viewPage/{id}")
+	public String view(HttpServletRequest request,@PathVariable Integer id) {
+		CommentDTO comment = commentService.get(id);
 		request.setAttribute("comment", comment);
 		return "/comment/commentView";
 	}
@@ -109,9 +111,9 @@ public class CommentController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/editPage")
-	public String editPage(HttpServletRequest request, Integer id) {
-		Comment comment = commentService.get(id);
+	@GetMapping("/editPage/{id}")
+	public String editPage(HttpServletRequest request, @PathVariable Integer id) {
+		CommentDTO comment = commentService.get(id);
 		request.setAttribute("comment", comment);
 		return "/comment/commentEdit";
 	}
@@ -122,8 +124,8 @@ public class CommentController extends BaseController {
 	 * @param comment
 	 * @return
 	 */
-	@RequestMapping("/edit")
-	public Json edit(Comment comment) {
+	@PutMapping("/edit")
+	public Json edit(CommentDTO comment) {
 		Json j = new Json();		
 		commentService.edit(comment);
 		j.setSuccess(true);
@@ -137,8 +139,8 @@ public class CommentController extends BaseController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping("/delete")
-	public Json delete(Integer id) {
+	@DeleteMapping("/{id}")
+	public Json delete(@PathVariable Integer id) {
 		Json j = new Json();
 		commentService.delete(id);
 		j.setMsg("删除成功！");

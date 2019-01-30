@@ -1,11 +1,12 @@
 package com.wanxp.blog.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.wanxp.blog.pageModel.*;
+import com.wanxp.blog.dto.*;
 import com.wanxp.blog.service.ContentMetaRelationshipServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +20,8 @@ import java.util.List;
  * @author John
  * 
  */
-@RestController("/contentMetaRelationshipController")
+@RestController
+@RequestMapping(value = "/contentMetaRelationship")
 public class ContentMetaRelationshipController extends BaseController {
 
 	@Autowired
@@ -31,7 +33,7 @@ public class ContentMetaRelationshipController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/manager")
+	@GetMapping("/manager")
 	public String manager(HttpServletRequest request) {
 		return "/contentmetarelationship/contentMetaRelationship";
 	}
@@ -42,9 +44,9 @@ public class ContentMetaRelationshipController extends BaseController {
 	 * @param
 	 * @return
 	 */
-	@RequestMapping("/dataGrid")
-	public DataGrid dataGrid(ContentMetaRelationship contentMetaRelationship, PageHelper ph) {
-		return contentMetaRelationshipService.dataGrid(contentMetaRelationship, ph);
+	@GetMapping("/dataGrid")
+	public Page dataGrid(ContentMetaRelationshipDTO contentMetaRelationship, Pageable pa) {
+		return contentMetaRelationshipService.queryInPage(contentMetaRelationship, pa);
 	}
 	/**
 	 * 获取ContentMetaRelationship数据表格excel
@@ -58,12 +60,12 @@ public class ContentMetaRelationshipController extends BaseController {
 	 * @throws IllegalArgumentException 
 	 * @throws IOException 
 	 */
-	@RequestMapping("/download")
-	public void download(ContentMetaRelationship contentMetaRelationship, PageHelper ph, String downloadFields, HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException{
-		DataGrid dg = dataGrid(contentMetaRelationship,ph);		
+	@GetMapping("/download")
+	public void download(ContentMetaRelationshipDTO contentMetaRelationship, Pageable pa, String downloadFields, HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException{
+		Page dg = dataGrid(contentMetaRelationship,pa);
 		downloadFields = downloadFields.replace("&quot;", "\"");
 		downloadFields = downloadFields.substring(1,downloadFields.length()-1);
-		List<Colum> colums = JSON.parseArray(downloadFields, Colum.class);
+		List<ColumDTO> colums = JSON.parseArray(downloadFields, ColumDTO.class);
 		downloadTable(colums, dg, response);
 	}
 	/**
@@ -72,9 +74,9 @@ public class ContentMetaRelationshipController extends BaseController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/addPage")
+	@GetMapping("/addPage")
 	public String addPage(HttpServletRequest request) {
-		ContentMetaRelationship contentMetaRelationship = new ContentMetaRelationship();
+		ContentMetaRelationshipDTO contentMetaRelationship = new ContentMetaRelationshipDTO();
 		return "/contentmetarelationship/contentMetaRelationshipAdd";
 	}
 
@@ -83,8 +85,8 @@ public class ContentMetaRelationshipController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/add")
-	public Json add(ContentMetaRelationship contentMetaRelationship) {
+	@PostMapping("/add")
+	public Json add(ContentMetaRelationshipDTO contentMetaRelationship) {
 		Json j = new Json();		
 		contentMetaRelationshipService.add(contentMetaRelationship);
 		j.setSuccess(true);
@@ -97,9 +99,9 @@ public class ContentMetaRelationshipController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/view")
-	public String view(HttpServletRequest request, Integer id) {
-		ContentMetaRelationship contentMetaRelationship = contentMetaRelationshipService.get(id);
+	@RequestMapping("/viewPage/{id}")
+	public String view(HttpServletRequest request, @PathVariable Integer id) {
+		ContentMetaRelationshipDTO contentMetaRelationship = contentMetaRelationshipService.get(id);
 		request.setAttribute("contentMetaRelationship", contentMetaRelationship);
 		return "/contentmetarelationship/contentMetaRelationshipView";
 	}
@@ -109,9 +111,9 @@ public class ContentMetaRelationshipController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/editPage")
-	public String editPage(HttpServletRequest request, Integer id) {
-		ContentMetaRelationship contentMetaRelationship = contentMetaRelationshipService.get(id);
+	@GetMapping("/editPage/{id}")
+	public String editPage(HttpServletRequest request, @PathVariable Integer id) {
+		ContentMetaRelationshipDTO contentMetaRelationship = contentMetaRelationshipService.get(id);
 		request.setAttribute("contentMetaRelationship", contentMetaRelationship);
 		return "/contentmetarelationship/contentMetaRelationshipEdit";
 	}
@@ -122,8 +124,8 @@ public class ContentMetaRelationshipController extends BaseController {
 	 * @param contentMetaRelationship
 	 * @return
 	 */
-	@RequestMapping("/edit")
-	public Json edit(ContentMetaRelationship contentMetaRelationship) {
+	@PutMapping("/edit")
+	public Json edit(ContentMetaRelationshipDTO contentMetaRelationship) {
 		Json j = new Json();		
 		contentMetaRelationshipService.edit(contentMetaRelationship);
 		j.setSuccess(true);
@@ -137,8 +139,8 @@ public class ContentMetaRelationshipController extends BaseController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping("/delete")
-	public Json delete(Integer id) {
+	@DeleteMapping("/{id}")
+	public Json delete(@PathVariable Integer id) {
 		Json j = new Json();
 		contentMetaRelationshipService.delete(id);
 		j.setMsg("删除成功！");

@@ -1,8 +1,8 @@
 package com.wanxp.blog.service;
 
-import com.wanxp.blog.pageModel.Attach;
-import com.wanxp.blog.pageModel.DataGrid;
-import com.wanxp.blog.pageModel.PageHelper;
+import com.wanxp.blog.dto.AttachDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * 
@@ -16,18 +16,18 @@ public interface AttachServiceI {
 	 * 
 	 * @param attach
 	 *            参数
-	 * @param ph
+	 * @param pa
 	 *            分页帮助类
 	 * @return
 	 */
-	public DataGrid dataGrid(Attach attach, PageHelper ph);
+	public Page queryInPage(AttachDTO attach, Pageable pa);
 
 	/**
 	 * 添加Attach
 	 * 
 	 * @param attach
 	 */
-	public void add(Attach attach);
+	public void add(AttachDTO attach);
 
 	/**
 	 * 获得Attach对象
@@ -35,14 +35,14 @@ public interface AttachServiceI {
 	 * @param id
 	 * @return
 	 */
-	public Attach get(Integer id);
+	public AttachDTO get(Integer id);
 
 	/**
 	 * 修改Attach
 	 * 
 	 * @param attach
 	 */
-	public void edit(Attach attach);
+	public void edit(AttachDTO attach);
 
 	/**
 	 * 删除Attach

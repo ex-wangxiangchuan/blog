@@ -1,16 +1,14 @@
 package com.wanxp.blog.controller;
 
 import com.wanxp.blog.interceptor.TokenManage;
-import com.wanxp.blog.pageModel.Colum;
-import com.wanxp.blog.pageModel.DataGrid;
-import com.wanxp.blog.pageModel.Json;
-import com.wanxp.blog.pageModel.SessionInfo;
+import com.wanxp.blog.dto.ColumDTO;
+import com.wanxp.blog.dto.SessionInfo;
 import com.wanxp.blog.util.Objectx;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,8 +41,9 @@ import java.util.List;
  * @author John
  * 
  */
-@RestController("/baseController")
-public class BaseController extends Objectx {
+@RestController
+@RequestMapping(value = "/base")
+public abstract class BaseController extends Objectx {
 
 	protected static final String EX_0001 = "EX0001";
 	protected static final String SUCCESS_MESSAGE = "操作成功";
@@ -69,34 +68,34 @@ public class BaseController extends Objectx {
 		//binder.registerCustomEditor(String.class, new StringEscapeEditor(true, true));
 	}
 
-	/**
-	 * 用户跳转JSP页面
-	 * 
-	 * 此方法不考虑权限控制
-	 * 
-	 * @param folder
-	 *            路径
-	 * @param jspName
-	 *            JSP名称(不加后缀)
-	 * @return 指定JSP页面
-	 */
-	@RequestMapping("/{folder}/{jspName}")
-	public String redirectJsp(@PathVariable String folder, @PathVariable String jspName) {
-		return "/" + folder + "/" + jspName;
-	}
-	
-	//@ExceptionHandler(Exception.class)  
-	//@ResponseBody
-	public Json ExceptionHandler(Exception e) {
-		Json j = new Json();
-//		if(_publishSettingVal.equals(ConvertNameUtil.getString(Constants.SYSTEM_PUBLISH_SETTING))){
-//			j.setMsg(ConvertNameUtil.getString(Constants.SYSTEM_GLOBAL_MESSAGE));
-//		}else{
-//			j.setMsg(e.getMessage());
-//		}
-		return j;
-	}
-	
+//	/**
+//	 * 用户跳转JSP页面
+//	 *
+//	 * 此方法不考虑权限控制
+//	 *
+//	 * @param folder
+//	 *            路径
+//	 * @param jspName
+//	 *            JSP名称(不加后缀)
+//	 * @return 指定JSP页面
+//	 */
+//	@RequestMapping("/{folder}/{jspName}")
+//	public String redirectJsp(@PathVariable String folder, @PathVariable String jspName) {
+//		return "/" + folder + "/" + jspName;
+//	}
+//
+//	//@ExceptionHandler(Exception.class)
+//	//@ResponseBody
+//	public Json ExceptionHandler(Exception e) {
+//		Json j = new Json();
+////		if(_publishSettingVal.equals(ConvertNameUtil.getString(Constants.SYSTEM_PUBLISH_SETTING))){
+////			j.setMsg(ConvertNameUtil.getString(Constants.SYSTEM_GLOBAL_MESSAGE));
+////		}else{
+////			j.setMsg(e.getMessage());
+////		}
+//		return j;
+//	}
+//
 	/**
 	 * 下载表格
 	 * @param colums
@@ -109,7 +108,7 @@ public class BaseController extends Objectx {
 	 * @throws InvocationTargetException
 	 * @throws IOException
 	 */
-	protected void downloadTable(List<Colum> colums, DataGrid dg, HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException {
+	protected void downloadTable(List<ColumDTO> colums, Page dg, HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException {
 //		Iterator<Colum> it = colums.iterator();
 //		while(it.hasNext()) {
 //			Colum c = it.next();

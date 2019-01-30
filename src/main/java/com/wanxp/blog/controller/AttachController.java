@@ -1,11 +1,14 @@
 package com.wanxp.blog.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.wanxp.blog.pageModel.*;
+import com.wanxp.blog.dto.*;
 import com.wanxp.blog.service.AttachServiceI;
+import com.wanxp.blog.vo.AttachVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,7 +21,8 @@ import java.util.List;
  *
  * @author John
  */
-@RestController("/attachController")
+@RestController
+@RequestMapping(value = "/attach")
 public class AttachController extends BaseController {
 
     @Autowired
@@ -30,7 +34,7 @@ public class AttachController extends BaseController {
      *
      * @return
      */
-    @RequestMapping("/manager")
+    @GetMapping(value = "/manager")
     public String manager(HttpServletRequest request) {
         return "/attach/attach";
     }
@@ -41,9 +45,9 @@ public class AttachController extends BaseController {
      * @param
      * @return
      */
-    @RequestMapping("/dataGrid")
-    public DataGrid dataGrid(Attach attach, PageHelper ph) {
-        return attachService.dataGrid(attach, ph);
+    @GetMapping("/dataGrid")
+    public Page dataGrid(AttachDTO attach, Pageable pa) {
+        return attachService.queryInPage(attach, pa);
     }
 
     /**
@@ -58,12 +62,12 @@ public class AttachController extends BaseController {
      * @throws IllegalArgumentException
      * @throws IOException
      */
-    @RequestMapping("/download")
-    public void download(Attach attach, PageHelper ph, String downloadFields, HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException {
-        DataGrid dg = dataGrid(attach, ph);
+    @GetMapping("/download")
+    public void download(AttachDTO attach, Pageable pa, String downloadFields, HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException {
+        Page dg = dataGrid(attach, pa);
         downloadFields = downloadFields.replace("&quot;", "\"");
         downloadFields = downloadFields.substring(1, downloadFields.length() - 1);
-        List<Colum> colums = JSON.parseArray(downloadFields, Colum.class);
+        List<ColumDTO> colums = JSON.parseArray(downloadFields, ColumDTO.class);
         downloadTable(colums, dg, response);
     }
 
@@ -73,9 +77,9 @@ public class AttachController extends BaseController {
      * @param request
      * @return
      */
-    @RequestMapping("/addPage")
+    @GetMapping("/addPage/")
     public String addPage(HttpServletRequest request) {
-        Attach attach = new Attach();
+        AttachDTO attach = new AttachDTO();
         return "/attach/attachAdd";
     }
 
@@ -84,8 +88,8 @@ public class AttachController extends BaseController {
      *
      * @return
      */
-    @RequestMapping("/add")
-    public Json add(Attach attach) {
+    @PostMapping("/")
+    public Json add(@RequestBody AttachDTO attach) {
         Json j = new Json();
         attachService.add(attach);
         j.setSuccess(true);
@@ -98,9 +102,22 @@ public class AttachController extends BaseController {
      *
      * @return
      */
-    @RequestMapping("/view")
-    public String view(HttpServletRequest request, Integer id) {
-        Attach attach = attachService.get(id);
+    @GetMapping("/{id}")
+    public AttachVO get(@PathVariable Integer id) {
+        AttachDTO attach = attachService.get(id);
+        AttachVO attachVO = new AttachVO();
+        BeanUtils.copyProperties(attach, attachVO);
+        return attachVO;
+    }
+
+    /**
+     * 跳转到Attach查看页面
+     *
+     * @return
+     */
+    @GetMapping("/viewPage/{id}")
+    public String view(HttpServletRequest request, @PathVariable Integer id) {
+        AttachDTO attach = attachService.get(id);
         request.setAttribute("attach", attach);
         return "/attach/attachView";
     }
@@ -110,9 +127,9 @@ public class AttachController extends BaseController {
      *
      * @return
      */
-    @RequestMapping("/editPage")
-    public String editPage(HttpServletRequest request, Integer id) {
-        Attach attach = attachService.get(id);
+    @GetMapping("/editPage/{id}")
+    public String editPage(HttpServletRequest request,@PathVariable Integer id) {
+        AttachDTO attach = attachService.get(id);
         request.setAttribute("attach", attach);
         return "/attach/attachEdit";
     }
@@ -123,8 +140,8 @@ public class AttachController extends BaseController {
      * @param attach
      * @return
      */
-    @RequestMapping("/edit")
-    public Json edit(Attach attach) {
+    @PutMapping("/")
+    public Json edit(AttachDTO attach) {
         Json j = new Json();
         attachService.edit(attach);
         j.setSuccess(true);
@@ -138,8 +155,8 @@ public class AttachController extends BaseController {
      * @param id
      * @return
      */
-    @RequestMapping("/delete")
-    public Json delete(Integer id) {
+    @DeleteMapping("/{id}")
+    public Json delete(@PathVariable Integer id) {
         Json j = new Json();
         attachService.delete(id);
         j.setMsg("删除成功！");

@@ -1,11 +1,12 @@
 package com.wanxp.blog.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.wanxp.blog.pageModel.*;
+import com.wanxp.blog.dto.*;
 import com.wanxp.blog.service.LogServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +20,8 @@ import java.util.List;
  * @author John
  * 
  */
-@RestController("/logController")
+@RestController
+@RequestMapping(value = "/log")
 public class LogController extends BaseController {
 
 	@Autowired
@@ -31,7 +33,7 @@ public class LogController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/manager")
+	@GetMapping("/manager")
 	public String manager(HttpServletRequest request) {
 		return "/log/log";
 	}
@@ -42,9 +44,9 @@ public class LogController extends BaseController {
 	 * @param user
 	 * @return
 	 */
-	@RequestMapping("/dataGrid")
-	public DataGrid dataGrid(Log log, PageHelper ph) {
-		return logService.dataGrid(log, ph);
+	@GetMapping("/dataGrid")
+	public Page dataGrid(LogDTO log, Pageable pa) {
+		return logService.queryInPage(log, pa);
 	}
 	/**
 	 * 获取Log数据表格excel
@@ -58,12 +60,12 @@ public class LogController extends BaseController {
 	 * @throws IllegalArgumentException 
 	 * @throws IOException 
 	 */
-	@RequestMapping("/download")
-	public void download(Log log, PageHelper ph, String downloadFields, HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException{
-		DataGrid dg = dataGrid(log,ph);		
+	@GetMapping("/download")
+	public void download(LogDTO log, Pageable pa, String downloadFields, HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException{
+		Page dg = dataGrid(log,pa);
 		downloadFields = downloadFields.replace("&quot;", "\"");
 		downloadFields = downloadFields.substring(1,downloadFields.length()-1);
-		List<Colum> colums = JSON.parseArray(downloadFields, Colum.class);
+		List<ColumDTO> colums = JSON.parseArray(downloadFields, ColumDTO.class);
 		downloadTable(colums, dg, response);
 	}
 	/**
@@ -72,9 +74,9 @@ public class LogController extends BaseController {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/addPage")
+	@GetMapping("/addPage")
 	public String addPage(HttpServletRequest request) {
-		Log log = new Log();
+		LogDTO log = new LogDTO();
 		return "/log/logAdd";
 	}
 
@@ -83,8 +85,8 @@ public class LogController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/add")
-	public Json add(Log log) {
+	@PostMapping("/add")
+	public Json add(LogDTO log) {
 		Json j = new Json();		
 		logService.add(log);
 		j.setSuccess(true);
@@ -97,9 +99,9 @@ public class LogController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/view")
-	public String view(HttpServletRequest request, Integer id) {
-		Log log = logService.get(id);
+	@GetMapping("/viewPage/{id}")
+	public String view(HttpServletRequest request, @PathVariable Integer id) {
+		LogDTO log = logService.get(id);
 		request.setAttribute("log", log);
 		return "/log/logView";
 	}
@@ -109,9 +111,9 @@ public class LogController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@RequestMapping("/editPage")
-	public String editPage(HttpServletRequest request, Integer id) {
-		Log log = logService.get(id);
+	@GetMapping("/editPage/{id}")
+	public String editPage(HttpServletRequest request, @PathVariable Integer id) {
+		LogDTO log = logService.get(id);
 		request.setAttribute("log", log);
 		return "/log/logEdit";
 	}
@@ -122,8 +124,8 @@ public class LogController extends BaseController {
 	 * @param log
 	 * @return
 	 */
-	@RequestMapping("/edit")
-	public Json edit(Log log) {
+	@PutMapping("/edit")
+	public Json edit(LogDTO log) {
 		Json j = new Json();		
 		logService.edit(log);
 		j.setSuccess(true);
@@ -137,8 +139,8 @@ public class LogController extends BaseController {
 	 * @param id
 	 * @return
 	 */
-	@RequestMapping("/delete")
-	public Json delete(Integer id) {
+	@DeleteMapping("/{id}")
+	public Json delete(@PathVariable Integer id) {
 		Json j = new Json();
 		logService.delete(id);
 		j.setMsg("删除成功！");

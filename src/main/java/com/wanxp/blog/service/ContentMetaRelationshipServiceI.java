@@ -1,8 +1,8 @@
 package com.wanxp.blog.service;
 
-import com.wanxp.blog.pageModel.ContentMetaRelationship;
-import com.wanxp.blog.pageModel.DataGrid;
-import com.wanxp.blog.pageModel.PageHelper;
+import com.wanxp.blog.dto.ContentMetaRelationshipDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 /**
  * 
@@ -16,18 +16,18 @@ public interface ContentMetaRelationshipServiceI {
 	 * 
 	 * @param contentMetaRelationship
 	 *            参数
-	 * @param ph
+	 * @param pa
 	 *            分页帮助类
 	 * @return
 	 */
-	public DataGrid dataGrid(ContentMetaRelationship contentMetaRelationship, PageHelper ph);
+	public Page queryInPage(ContentMetaRelationshipDTO contentMetaRelationship, Pageable pa);
 
 	/**
 	 * 添加ContentMetaRelationship
 	 * 
 	 * @param contentMetaRelationship
 	 */
-	public void add(ContentMetaRelationship contentMetaRelationship);
+	public void add(ContentMetaRelationshipDTO contentMetaRelationship);
 
 	/**
 	 * 获得ContentMetaRelationship对象
@@ -35,14 +35,14 @@ public interface ContentMetaRelationshipServiceI {
 	 * @param id
 	 * @return
 	 */
-	public ContentMetaRelationship get(Integer id);
+	public ContentMetaRelationshipDTO get(Integer id);
 
 	/**
 	 * 修改ContentMetaRelationship
 	 * 
 	 * @param contentMetaRelationship
 	 */
-	public void edit(ContentMetaRelationship contentMetaRelationship);
+	public void edit(ContentMetaRelationshipDTO contentMetaRelationship);
 
 	/**
 	 * 删除ContentMetaRelationship
