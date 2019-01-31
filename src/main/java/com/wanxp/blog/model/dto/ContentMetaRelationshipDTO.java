@@ -1,9 +1,9 @@
-package com.wanxp.blog.vo;
+package com.wanxp.blog.model.dto;
 
 import java.util.Date;
 
 @SuppressWarnings("serial")
-public class MetaVO implements java.io.Serializable {
+public class ContentMetaRelationshipDTO implements java.io.Serializable {
 
 	private static final long serialVersionUID = 5454155825314635342L;
 
@@ -12,12 +12,8 @@ public class MetaVO implements java.io.Serializable {
 	private Date addtime;			
 	private Date updatetime;			
 	private Boolean isdeleted;
-	private String name;
-	private String slug;
-	private String type;
-	private String description;
-	private Integer sort;
-	private Integer parent;
+	private Integer contentId;
+	private Integer metaId;
 
 	
 
@@ -58,47 +54,19 @@ public class MetaVO implements java.io.Serializable {
 	public Boolean getIsdeleted() {
 		return this.isdeleted;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setContentId(Integer contentId) {
+		this.contentId = contentId;
 	}
 	
-	public String getName() {
-		return this.name;
+	public Integer getContentId() {
+		return this.contentId;
 	}
-	public void setSlug(String slug) {
-		this.slug = slug;
-	}
-	
-	public String getSlug() {
-		return this.slug;
-	}
-	public void setType(String type) {
-		this.type = type;
+	public void setMetaId(Integer metaId) {
+		this.metaId = metaId;
 	}
 	
-	public String getType() {
-		return this.type;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	public String getDescription() {
-		return this.description;
-	}
-	public void setSort(Integer sort) {
-		this.sort = sort;
-	}
-	
-	public Integer getSort() {
-		return this.sort;
-	}
-	public void setParent(Integer parent) {
-		this.parent = parent;
-	}
-	
-	public Integer getParent() {
-		return this.parent;
+	public Integer getMetaId() {
+		return this.metaId;
 	}
 
 }

@@ -1,6 +1,6 @@
 package com.wanxp.blog.service;
 
-import com.wanxp.blog.dto.OptionDTO;
+import com.wanxp.blog.model.dto.OptionDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

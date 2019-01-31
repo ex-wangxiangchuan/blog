@@ -1,9 +1,9 @@
-package com.wanxp.blog.vo;
+package com.wanxp.blog.model.dto;
 
 import java.util.Date;
 
 @SuppressWarnings("serial")
-public class ContentMetaRelationshipVO implements java.io.Serializable {
+public class OptionDTO implements java.io.Serializable {
 
 	private static final long serialVersionUID = 5454155825314635342L;
 
@@ -12,8 +12,9 @@ public class ContentMetaRelationshipVO implements java.io.Serializable {
 	private Date addtime;			
 	private Date updatetime;			
 	private Boolean isdeleted;
-	private Integer contentId;
-	private Integer metaId;
+	private String name;
+	private String value;
+	private String description;
 
 	
 
@@ -54,19 +55,26 @@ public class ContentMetaRelationshipVO implements java.io.Serializable {
 	public Boolean getIsdeleted() {
 		return this.isdeleted;
 	}
-	public void setContentId(Integer contentId) {
-		this.contentId = contentId;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
-	public Integer getContentId() {
-		return this.contentId;
+	public String getName() {
+		return this.name;
 	}
-	public void setMetaId(Integer metaId) {
-		this.metaId = metaId;
+	public void setValue(String value) {
+		this.value = value;
 	}
 	
-	public Integer getMetaId() {
-		return this.metaId;
+	public String getValue() {
+		return this.value;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public String getDescription() {
+		return this.description;
 	}
 
 }

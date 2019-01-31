@@ -1,4 +1,4 @@
-package com.wanxp.blog.dto;
+package com.wanxp.blog.model.dto;
 
 public class ColumDTO {
 	private String field;

@@ -1,9 +1,9 @@
-package com.wanxp.blog.dto;
+package com.wanxp.blog.model.vo;
 
 import java.util.Date;
 
 @SuppressWarnings("serial")
-public class CommentDTO implements java.io.Serializable {
+public class CommentVO implements java.io.Serializable {
 
 	private static final long serialVersionUID = 5454155825314635342L;
 

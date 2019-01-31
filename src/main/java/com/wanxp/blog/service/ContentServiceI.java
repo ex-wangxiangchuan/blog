@@ -1,6 +1,6 @@
 package com.wanxp.blog.service;
 
-import com.wanxp.blog.dto.ContentDTO;
+import com.wanxp.blog.model.dto.ContentDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -10,6 +10,15 @@ import org.springframework.data.domain.Pageable;
  * 
  */
 public interface ContentServiceI {
+
+
+    /**
+     * 获取Content数据表格
+     * @param pa
+     *            分页帮助类
+     * @return
+     */
+    public Page queryInPage(Pageable pa);
 
 	/**
 	 * 获取Content数据表格

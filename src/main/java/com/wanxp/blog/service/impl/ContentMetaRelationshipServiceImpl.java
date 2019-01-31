@@ -2,7 +2,7 @@ package com.wanxp.blog.service.impl;
 
 import com.wanxp.blog.dao.ContentMetaRelationshipRepository;
 import com.wanxp.blog.model.ContentMetaRelationship;
-import com.wanxp.blog.dto.ContentMetaRelationshipDTO;
+import com.wanxp.blog.model.dto.ContentMetaRelationshipDTO;
 import com.wanxp.blog.service.ContentMetaRelationshipServiceI;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

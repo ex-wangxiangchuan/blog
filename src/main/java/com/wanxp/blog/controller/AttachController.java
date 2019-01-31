@@ -1,9 +1,9 @@
 package com.wanxp.blog.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.wanxp.blog.dto.*;
+import com.wanxp.blog.model.dto.*;
 import com.wanxp.blog.service.AttachServiceI;
-import com.wanxp.blog.vo.AttachVO;
+import com.wanxp.blog.model.vo.AttachVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

@@ -1,4 +1,4 @@
-package com.wanxp.blog.vo;
+package com.wanxp.blog.model.vo;
 
 import java.util.ArrayList;
 import java.util.List;

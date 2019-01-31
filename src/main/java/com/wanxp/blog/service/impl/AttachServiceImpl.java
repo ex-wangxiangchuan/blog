@@ -2,7 +2,7 @@ package com.wanxp.blog.service.impl;
 
 import com.wanxp.blog.dao.AttachRepostory;
 import com.wanxp.blog.model.Attach;
-import com.wanxp.blog.dto.AttachDTO;
+import com.wanxp.blog.model.dto.AttachDTO;
 import com.wanxp.blog.service.AttachServiceI;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package com.wanxp.blog.interceptor;
 
-import com.wanxp.blog.dto.SessionInfo;
+import com.wanxp.blog.model.dto.SessionInfo;
 import com.wanxp.blog.service.impl.RedisUserServiceImpl;
 import com.wanxp.blog.util.F;
 import com.wanxp.blog.util.UUID;

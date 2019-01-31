@@ -10,7 +10,7 @@
             <th:forEach items="contentList" begin="0" end="11" var="content" >
                 <div class="post-list-item">
                     <div class="post-list-item-container">
-                        <div class="item-thumb bg-deepgrey" style="background-image:url(${content.pictureUrl});"></div>
+                        <div class="item-thumb bg-deepgrey" style="background-image:url(${content.thumbImg});"></div>
                         <a href="${content.url}">
                             <div class="item-desc">
                                 <p>${content.shortContent}...</p>
@@ -23,7 +23,7 @@
                             </div>
                             <div class="item-meta clearfix">
                                 <div class="item-meta-ico ${show_icon()}"
-                                     style="background: url(/templates/themes/default/static/img/bg-ico.png) no-repeat;background-size: 40px auto;"></div>
+                                     style="background: url(/img/bg-ico.png) no-repeat;background-size: 40px auto;"></div>
                                 <div class="item-meta-cat">
                                     ${show_categories()}
                                 </div>

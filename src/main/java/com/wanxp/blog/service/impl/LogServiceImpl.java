@@ -2,7 +2,7 @@ package com.wanxp.blog.service.impl;
 
 import com.wanxp.blog.dao.LogRepository;
 import com.wanxp.blog.model.Log;
-import com.wanxp.blog.dto.LogDTO;
+import com.wanxp.blog.model.dto.LogDTO;
 import com.wanxp.blog.service.LogServiceI;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

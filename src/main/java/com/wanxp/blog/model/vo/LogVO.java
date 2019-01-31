@@ -1,9 +1,9 @@
-package com.wanxp.blog.dto;
+package com.wanxp.blog.model.vo;
 
 import java.util.Date;
 
 @SuppressWarnings("serial")
-public class AttachDTO implements java.io.Serializable {
+public class LogVO implements java.io.Serializable {
 
 	private static final long serialVersionUID = 5454155825314635342L;
 
@@ -12,10 +12,10 @@ public class AttachDTO implements java.io.Serializable {
 	private Date addtime;			
 	private Date updatetime;			
 	private Boolean isdeleted;
-	private String fname;
-	private String ftype;
-	private String fkey;
+	private String action;
+	private String data;
 	private Integer authorId;
+	private String ip;
 	private Integer created;
 
 	
@@ -57,26 +57,19 @@ public class AttachDTO implements java.io.Serializable {
 	public Boolean getIsdeleted() {
 		return this.isdeleted;
 	}
-	public void setFname(String fname) {
-		this.fname = fname;
+	public void setAction(String action) {
+		this.action = action;
 	}
 	
-	public String getFname() {
-		return this.fname;
+	public String getAction() {
+		return this.action;
 	}
-	public void setFtype(String ftype) {
-		this.ftype = ftype;
-	}
-	
-	public String getFtype() {
-		return this.ftype;
-	}
-	public void setFkey(String fkey) {
-		this.fkey = fkey;
+	public void setData(String data) {
+		this.data = data;
 	}
 	
-	public String getFkey() {
-		return this.fkey;
+	public String getData() {
+		return this.data;
 	}
 	public void setAuthorId(Integer authorId) {
 		this.authorId = authorId;
@@ -84,6 +77,13 @@ public class AttachDTO implements java.io.Serializable {
 	
 	public Integer getAuthorId() {
 		return this.authorId;
+	}
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+	
+	public String getIp() {
+		return this.ip;
 	}
 	public void setCreated(Integer created) {
 		this.created = created;

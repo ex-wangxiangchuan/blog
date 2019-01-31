@@ -2,12 +2,10 @@ package com.wanxp.blog.service.impl;
 
 import com.wanxp.blog.dao.ContentRepository;
 import com.wanxp.blog.model.Content;
-import com.wanxp.blog.dto.ContentDTO;
+import com.wanxp.blog.model.dto.ContentDTO;
 import com.wanxp.blog.service.ContentServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,7 +20,7 @@ public class ContentServiceImpl implements ContentServiceI {
 	private ContentRepository repostory;
 
     @Override
-    public Page<ContentDTO> queryInPage(ContentDTO dto, Pageable pa) {
+    public Page<ContentDTO> queryInPage(Pageable pa) {
         Page<Content> p = repostory.findAll(pa);
         List<ContentDTO> ds = new ArrayList<>();
         if (p == null || p.getContent() == null)
@@ -33,6 +31,11 @@ public class ContentServiceImpl implements ContentServiceI {
             ds.add(d);
         });
         return new PageImpl<ContentDTO>(ds);
+    }
+
+    @Override
+    public Page<ContentDTO> queryInPage(ContentDTO dto, Pageable pa) {
+        return null;
     }
 
     @Override

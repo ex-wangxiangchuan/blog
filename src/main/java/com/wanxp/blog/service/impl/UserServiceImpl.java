@@ -2,7 +2,7 @@ package com.wanxp.blog.service.impl;
 
 import com.wanxp.blog.dao.UserRepository;
 import com.wanxp.blog.model.User;
-import com.wanxp.blog.dto.UserDTO;
+import com.wanxp.blog.model.dto.UserDTO;
 import com.wanxp.blog.service.UserServiceI;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

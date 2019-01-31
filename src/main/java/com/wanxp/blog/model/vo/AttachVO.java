@@ -1,9 +1,9 @@
-package com.wanxp.blog.dto;
+package com.wanxp.blog.model.vo;
 
 import java.util.Date;
 
 @SuppressWarnings("serial")
-public class MetaDTO implements java.io.Serializable {
+public class AttachVO implements java.io.Serializable {
 
 	private static final long serialVersionUID = 5454155825314635342L;
 
@@ -12,12 +12,11 @@ public class MetaDTO implements java.io.Serializable {
 	private Date addtime;			
 	private Date updatetime;			
 	private Boolean isdeleted;
-	private String name;
-	private String slug;
-	private String type;
-	private String description;
-	private Integer sort;
-	private Integer parent;
+	private String fname;
+	private String ftype;
+	private String fkey;
+	private Integer authorId;
+	private Integer created;
 
 	
 
@@ -58,47 +57,40 @@ public class MetaDTO implements java.io.Serializable {
 	public Boolean getIsdeleted() {
 		return this.isdeleted;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setFname(String fname) {
+		this.fname = fname;
 	}
 	
-	public String getName() {
-		return this.name;
+	public String getFname() {
+		return this.fname;
 	}
-	public void setSlug(String slug) {
-		this.slug = slug;
-	}
-	
-	public String getSlug() {
-		return this.slug;
-	}
-	public void setType(String type) {
-		this.type = type;
+	public void setFtype(String ftype) {
+		this.ftype = ftype;
 	}
 	
-	public String getType() {
-		return this.type;
+	public String getFtype() {
+		return this.ftype;
 	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
-	public String getDescription() {
-		return this.description;
-	}
-	public void setSort(Integer sort) {
-		this.sort = sort;
+	public void setFkey(String fkey) {
+		this.fkey = fkey;
 	}
 	
-	public Integer getSort() {
-		return this.sort;
+	public String getFkey() {
+		return this.fkey;
 	}
-	public void setParent(Integer parent) {
-		this.parent = parent;
+	public void setAuthorId(Integer authorId) {
+		this.authorId = authorId;
 	}
 	
-	public Integer getParent() {
-		return this.parent;
+	public Integer getAuthorId() {
+		return this.authorId;
+	}
+	public void setCreated(Integer created) {
+		this.created = created;
+	}
+	
+	public Integer getCreated() {
+		return this.created;
 	}
 
 }

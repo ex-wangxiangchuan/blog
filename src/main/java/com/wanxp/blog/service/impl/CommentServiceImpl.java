@@ -2,7 +2,7 @@ package com.wanxp.blog.service.impl;
 
 import com.wanxp.blog.dao.CommentRepository;
 import com.wanxp.blog.model.Comment;
-import com.wanxp.blog.dto.CommentDTO;
+import com.wanxp.blog.model.dto.CommentDTO;
 import com.wanxp.blog.service.CommentServiceI;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

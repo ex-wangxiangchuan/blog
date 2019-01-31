@@ -2,7 +2,7 @@ package com.wanxp.blog.service.impl;
 
 import com.wanxp.blog.dao.OptionRepository;
 import com.wanxp.blog.model.Option;
-import com.wanxp.blog.dto.OptionDTO;
+import com.wanxp.blog.model.dto.OptionDTO;
 import com.wanxp.blog.service.OptionServiceI;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

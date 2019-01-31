@@ -1,4 +1,4 @@
-package com.wanxp.blog.dto;
+package com.wanxp.blog.model.vo;
 
 /**
  * 

@@ -1,18 +1,21 @@
 package com.wanxp.blog.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.wanxp.blog.dto.*;
+import com.wanxp.blog.model.dto.*;
 import com.wanxp.blog.service.ContentServiceI;
+import com.wanxp.blog.model.vo.ContentVO;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 
 /**
  * Content管理控制器
@@ -44,9 +47,16 @@ public class ContentController extends BaseController {
 	 * @param user
 	 * @return
 	 */
-	@GetMapping("/dataGrid")
-	public Page dataGrid(ContentDTO content, Pageable pa) {
-		return contentService.queryInPage(content, pa);
+	@GetMapping(value = {"/page"})
+	public Page dataGrid(@RequestParam(name = "page") Integer page, @RequestParam(name = "size") Integer size
+            , @RequestParam(name = "sortDirection") String sortDirection, @RequestParam(name = "sortBy") String sortBy) {
+        PageRequest pa;
+        if (!StringUtils.isEmpty(sortDirection)) {
+            pa = PageRequest.of(page, size, Sort.Direction.fromString(sortDirection), sortBy);
+        }else {
+            pa = PageRequest.of(page, size);
+        }
+		return contentService.queryInPage(pa);
 	}
 	/**
 	 * 获取Content数据表格excel
@@ -62,11 +72,11 @@ public class ContentController extends BaseController {
 	 */
 	@GetMapping("/download")
 	public void download(ContentDTO content, Pageable pa, String downloadFields, HttpServletResponse response) throws SecurityException, NoSuchMethodException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, IOException{
-		Page dg = dataGrid(content,pa);
-		downloadFields = downloadFields.replace("&quot;", "\"");
-		downloadFields = downloadFields.substring(1,downloadFields.length()-1);
-		List<ColumDTO> colums = JSON.parseArray(downloadFields, ColumDTO.class);
-		downloadTable(colums, dg, response);
+//		Page dg = dataGrid(content,pa);
+//		downloadFields = downloadFields.replace("&quot;", "\"");
+//		downloadFields = downloadFields.substring(1,downloadFields.length()-1);
+//		List<ColumDTO> colums = JSON.parseArray(downloadFields, ColumDTO.class);
+//		downloadTable(colums, dg, response);
 	}
 	/**
 	 * 跳转到添加Content页面
@@ -85,10 +95,12 @@ public class ContentController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@PostMapping("/add")
-	public Json add(ContentDTO content) {
-		Json j = new Json();		
-		contentService.add(content);
+	@PostMapping("/")
+	public Json add(@RequestBody ContentVO contentVO) {
+		Json j = new Json();
+		ContentDTO contentDTO = new ContentDTO();
+        BeanUtils.copyProperties(contentVO, contentDTO);
+		contentService.add(contentDTO);
 		j.setSuccess(true);
 		j.setMsg("添加成功！");		
 		return j;

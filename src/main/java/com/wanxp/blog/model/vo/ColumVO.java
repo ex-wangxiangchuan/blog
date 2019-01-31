@@ -1,4 +1,4 @@
-package com.wanxp.blog.vo;
+package com.wanxp.blog.model.vo;
 
 public class ColumVO {
 	private String field;

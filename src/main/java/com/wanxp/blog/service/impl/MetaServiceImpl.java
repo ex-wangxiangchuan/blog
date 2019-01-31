@@ -2,7 +2,7 @@ package com.wanxp.blog.service.impl;
 
 import com.wanxp.blog.dao.MetaRepository;
 import com.wanxp.blog.model.Meta;
-import com.wanxp.blog.dto.MetaDTO;
+import com.wanxp.blog.model.dto.MetaDTO;
 import com.wanxp.blog.service.MetaServiceI;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,9 @@
-package com.wanxp.blog.vo;
+package com.wanxp.blog.model.dto;
 
 import java.util.Date;
 
 @SuppressWarnings("serial")
-public class OptionVO implements java.io.Serializable {
+public class MetaDTO implements java.io.Serializable {
 
 	private static final long serialVersionUID = 5454155825314635342L;
 
@@ -13,8 +13,11 @@ public class OptionVO implements java.io.Serializable {
 	private Date updatetime;			
 	private Boolean isdeleted;
 	private String name;
-	private String value;
+	private String slug;
+	private String type;
 	private String description;
+	private Integer sort;
+	private Integer parent;
 
 	
 
@@ -62,12 +65,19 @@ public class OptionVO implements java.io.Serializable {
 	public String getName() {
 		return this.name;
 	}
-	public void setValue(String value) {
-		this.value = value;
+	public void setSlug(String slug) {
+		this.slug = slug;
 	}
 	
-	public String getValue() {
-		return this.value;
+	public String getSlug() {
+		return this.slug;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	public String getType() {
+		return this.type;
 	}
 	public void setDescription(String description) {
 		this.description = description;
@@ -75,6 +85,20 @@ public class OptionVO implements java.io.Serializable {
 	
 	public String getDescription() {
 		return this.description;
+	}
+	public void setSort(Integer sort) {
+		this.sort = sort;
+	}
+	
+	public Integer getSort() {
+		return this.sort;
+	}
+	public void setParent(Integer parent) {
+		this.parent = parent;
+	}
+	
+	public Integer getParent() {
+		return this.parent;
 	}
 
 }

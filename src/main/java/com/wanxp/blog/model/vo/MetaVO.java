@@ -1,9 +1,9 @@
-package com.wanxp.blog.vo;
+package com.wanxp.blog.model.vo;
 
 import java.util.Date;
 
 @SuppressWarnings("serial")
-public class AttachVO implements java.io.Serializable {
+public class MetaVO implements java.io.Serializable {
 
 	private static final long serialVersionUID = 5454155825314635342L;
 
@@ -12,11 +12,12 @@ public class AttachVO implements java.io.Serializable {
 	private Date addtime;			
 	private Date updatetime;			
 	private Boolean isdeleted;
-	private String fname;
-	private String ftype;
-	private String fkey;
-	private Integer authorId;
-	private Integer created;
+	private String name;
+	private String slug;
+	private String type;
+	private String description;
+	private Integer sort;
+	private Integer parent;
 
 	
 
@@ -57,40 +58,47 @@ public class AttachVO implements java.io.Serializable {
 	public Boolean getIsdeleted() {
 		return this.isdeleted;
 	}
-	public void setFname(String fname) {
-		this.fname = fname;
+	public void setName(String name) {
+		this.name = name;
 	}
 	
-	public String getFname() {
-		return this.fname;
+	public String getName() {
+		return this.name;
 	}
-	public void setFtype(String ftype) {
-		this.ftype = ftype;
-	}
-	
-	public String getFtype() {
-		return this.ftype;
-	}
-	public void setFkey(String fkey) {
-		this.fkey = fkey;
+	public void setSlug(String slug) {
+		this.slug = slug;
 	}
 	
-	public String getFkey() {
-		return this.fkey;
+	public String getSlug() {
+		return this.slug;
 	}
-	public void setAuthorId(Integer authorId) {
-		this.authorId = authorId;
-	}
-	
-	public Integer getAuthorId() {
-		return this.authorId;
-	}
-	public void setCreated(Integer created) {
-		this.created = created;
+	public void setType(String type) {
+		this.type = type;
 	}
 	
-	public Integer getCreated() {
-		return this.created;
+	public String getType() {
+		return this.type;
+	}
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public String getDescription() {
+		return this.description;
+	}
+	public void setSort(Integer sort) {
+		this.sort = sort;
+	}
+	
+	public Integer getSort() {
+		return this.sort;
+	}
+	public void setParent(Integer parent) {
+		this.parent = parent;
+	}
+	
+	public Integer getParent() {
+		return this.parent;
 	}
 
 }
