@@ -31,7 +31,7 @@ public class BlogApplicationTests {
         content.setIsdeleted(false);
         content.setTitle("文章标题1:奔跑的猪");
         content.setSlug("slug");
-        content.setThumbImg("");
+        content.setThumbImg("http://pm6wq3fti.bkt.clouddn.com/==.jpg");
         content.setCreated(11);
         content.setModified(11);
         content.setContent("在太阳还未升起的那一刻,地球转不动了");
