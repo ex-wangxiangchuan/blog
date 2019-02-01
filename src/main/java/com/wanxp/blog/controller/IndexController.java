@@ -11,8 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -21,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping
 public class IndexController extends BaseController{
 
     @Autowired
@@ -30,8 +32,8 @@ public class IndexController extends BaseController{
     @Autowired
     private CommentServiceI commentService;
 
-    @RequestMapping(value = "/")
-    public ModelAndView index(Model model) throws IOException {
+    @GetMapping( "/aa")
+    public String index(Model model) throws IOException {
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "updatetime");
         Page contentPage = contentService.queryInPage(pageRequest);
         List<ContentDTO> contentDTOList = contentPage.getContent();
@@ -73,9 +75,7 @@ public class IndexController extends BaseController{
         model.addAttribute("lastContentList", contentVOS2);
         model.addAttribute("logined", true);
         model.addAttribute("title", "sYsBlog");
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("index");
-        return modelAndView;
+        return "/index";
     }
 
 }
