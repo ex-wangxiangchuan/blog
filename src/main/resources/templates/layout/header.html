@@ -5,6 +5,11 @@
 </div>
 <![endif]-->
 <header id="header" class="header bg-white" >
+    <link rel="shortcut icon" href="/img/favicon.png"/>
+    <link rel="apple-touch-icon" href="/img/apple-touch-icon.png"/>
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/js/highlight.min.js')}"></script>
+    <script src="/js/instantclick.min.js')}"></script>
     <script src="http://cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
     <script src="http://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <link href="/css/xcode.min.css" rel="stylesheet">
@@ -12,9 +17,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" th:fragment="header"/>
     <div class="navbar-container">
         <a href="/" class="navbar-logo">
-            <div th:if="${logined}">
                 <img src="/img/logo.png" th:alt="${title}"/>
-            </div>
         </a>
         <div class="-navbar-menu">
             <a href="/index/archives">归档</a>

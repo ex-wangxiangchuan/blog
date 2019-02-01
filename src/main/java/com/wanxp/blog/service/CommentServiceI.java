@@ -11,6 +11,16 @@ import org.springframework.data.domain.Pageable;
  */
 public interface CommentServiceI {
 
+
+	/**
+	 * 获取Comment数据表格
+	 *
+	 * @param pa
+	 *            分页帮助类
+	 * @return
+	 */
+	public Page queryInPage(Pageable pa);
+
 	/**
 	 * 获取Comment数据表格
 	 * 

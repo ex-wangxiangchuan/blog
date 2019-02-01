@@ -111,11 +111,11 @@ public class ContentController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@GetMapping("/viewPage/{id}")
+	@GetMapping("/viewpage/{id}")
 	public String view(HttpServletRequest request, @PathVariable Integer id) {
 		ContentDTO content = contentService.get(id);
 		request.setAttribute("content", content);
-		return "/content/contentView";
+		return "/content/viewpage";
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class ContentController extends BaseController {
 	 * 
 	 * @return
 	 */
-	@GetMapping("/editPage/{id}")
+	@GetMapping("/editpage/{id}")
 	public String editPage(HttpServletRequest request, @PathVariable Integer id) {
 		ContentDTO content = contentService.get(id);
 		request.setAttribute("content", content);

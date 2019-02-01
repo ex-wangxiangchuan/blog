@@ -1,5 +1,7 @@
 package com.wanxp.blog.model.vo;
 
+import com.wanxp.blog.constant.ICON;
+
 import java.util.Date;
 
 @SuppressWarnings("serial")
@@ -29,6 +31,8 @@ public class ContentVO implements java.io.Serializable {
 	private Integer allowComment;
 	private Integer allowPing;
 	private Integer allowFeed;
+	private String iconClassName;
+	private String url;
 
 	
 
@@ -189,4 +193,15 @@ public class ContentVO implements java.io.Serializable {
 		return this.allowFeed;
 	}
 
+	public String getIconClassName() {
+		return ICON.getICON(this.categories).getIconClassName();
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 }

@@ -21,6 +21,21 @@ public class CommentServiceImpl implements CommentServiceI {
 	private CommentRepository repostory;
 
     @Override
+    public Page<CommentDTO> queryInPage(Pageable pa) {
+        Page<Comment> p = repostory.findAll(pa);
+        List<CommentDTO> ds = new ArrayList<>();
+        if (p == null || p.getContent() == null)
+            return null;
+        p.getContent().stream().forEach(x -> {
+            CommentDTO d = new CommentDTO();
+            BeanUtils.copyProperties(x, d);
+            ds.add(d);
+        });
+        return new PageImpl<CommentDTO>(ds);
+    }
+
+
+    @Override
     public Page<CommentDTO> queryInPage(CommentDTO dto, Pageable pa) {
         Page<Comment> p = repostory.findAll(pa);
         List<CommentDTO> ds = new ArrayList<>();
