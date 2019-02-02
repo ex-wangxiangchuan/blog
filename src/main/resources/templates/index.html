@@ -3,7 +3,7 @@
 <header>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </header>
-<div th:replace="/layout/header :: header"></div>
+<div th:replace="/partial/header :: header"></div>
 <body>
 
 <script type="text/javascript">
@@ -11,7 +11,7 @@
     }
 </script>
 
-<div class="contentPage"  th:replace="/layout/pagelist :: pagelist"></div>
+<div class="contentPage"  th:replace="/partial/pagelist :: pagelist"></div>
 <div class="lists-navigator clearfix">
     <a href="/content/pagePre"><-</a>
     <a href="/content/page">1</a>
@@ -19,5 +19,5 @@
 </div>
 
 </body>
-<div th:replace="/layout/footer :: footer"></div>
+<div th:replace="/partial/footer :: footer"></div>
 </html>
