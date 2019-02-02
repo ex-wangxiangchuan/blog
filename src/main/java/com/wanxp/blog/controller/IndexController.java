@@ -32,7 +32,7 @@ public class IndexController extends BaseController{
     @Autowired
     private CommentServiceI commentService;
 
-    @GetMapping( "/aa")
+    @GetMapping( "/")
     public String index(Model model) throws IOException {
         PageRequest pageRequest = PageRequest.of(0, 10, Sort.Direction.DESC, "updatetime");
         Page contentPage = contentService.queryInPage(pageRequest);

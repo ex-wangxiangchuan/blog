@@ -7,6 +7,7 @@ import com.wanxp.blog.util.Objectx;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.data.domain.Page;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.ServletRequestDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +42,7 @@ import java.util.List;
  * @author John
  * 
  */
-@RestController
+@Controller
 @RequestMapping(value = "/base")
 public abstract class BaseController extends Objectx {
 
